@@ -18,3 +18,10 @@ path = [
 ]
 SPDX-FileCopyrightText = '2026 林博仁(Buo-ren Lin) <buo.ren.lin@gmail.com>'
 SPDX-License-Identifier = 'GPL-3.0-or-later'
+
+[[annotations]]
+path = [
+    "snap/gui/oscar.png"
+]
+SPDX-FileCopyrightText = 'The OSCAR Team <https://gitlab.com/Seeker4/OSCAR-code/-/work_items>'
+SPDX-License-Identifier = 'GPL-3.0-only'

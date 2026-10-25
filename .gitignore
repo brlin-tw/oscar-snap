@@ -67,6 +67,7 @@
 *.bmp
 *.jpg
 *.png
+!/snap/gui/*.png
 
 # Don't track common export formats from Markdown
 *.doc?
@@ -97,3 +98,6 @@
 
 # Don't track unpacked product files
 /oscar-snap-*/
+
+# Don't track built snap packages
+*.snap

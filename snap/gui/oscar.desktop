@@ -1,0 +1,17 @@
+# Desktop entry file for OSCAR
+#
+# Copyright 2026 林博仁(Buo-ren Lin) <buo.ren.lin@gmail.com>
+# SPDX-License-Identifier: GPL-3.0-or-later
+[Desktop Entry]
+Version=1.1
+Name=OSCAR (unofficial snap)
+GenericName=CPAP Reporter
+Comment=OpenSource CPAP Analysis Reporter
+Exec=oscar %U
+Icon=oscar
+Terminal=false
+Type=Application
+Categories=Education;Science;MedicalSoftware;
+StartupNotify=true
+X-GNOME-UsesNotifications=true
+Keywords=CPAP;Sleep;Apnea;Oximetry;

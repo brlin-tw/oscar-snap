@@ -1,0 +1,109 @@
+# Snap packaging recipe for OSCAR
+#
+# Copyright 2026 林博仁(Buo-ren Lin) <buo.ren.lin@gmail.com>
+# SPDX-License-Identifier: GPL-3.0-or-later
+name: oscar
+title: OSCAR (UNOFFICIAL)
+summary: OpenSource CPAP Analysis Reporter
+description: |
+  OSCAR (OpenSource CPAP Analysis Reporter) is a desktop application for
+  reviewing and tracking CPAP and oximetry data used in the treatment of sleep
+  disorders such as Obstructive Sleep Apnea.
+base: core24
+adopt-info: oscar
+grade: stable
+confinement: strict
+license: GPL-3.0-only
+contact: https://gitlab.com/brlin/oscar-snap/-/issues
+website: https://gitlab.com/brlin/oscar-snap
+issues: https://gitlab.com/brlin/oscar-snap/-/issues
+source-code: https://gitlab.com/brlin/oscar-snap
+
+layout:
+  /usr/share/OSCAR20:
+    symlink: $SNAP/share/OSCAR20
+
+apps:
+  oscar:
+    command: bin/OSCAR20
+    desktop: usr/share/applications/oscar.desktop
+    extensions:
+      - kde-neon-6
+    plugs:
+      - home
+      - removable-media
+      - raw-usb
+      - serial-port
+      - cups
+
+parts:
+  oscar:
+    plugin: qmake
+    qmake-major-version: 6
+    qmake-project-file: OSCAR_QT.pro
+    source: https://gitlab.com/Seeker4/OSCAR-code.git
+    build-packages:
+      # selective-checkout dependencies
+      - curl
+      - git
+      - jq
+      - sed
+
+      - diffutils
+      - g++
+      - libgl1-mesa-dev
+      - libglu1-mesa-dev
+      - libudev-dev
+      - libx11-dev
+      - make
+      - python3
+      - qmake6
+      - qt6-base-dev-tools
+      - qt6-tools-dev-tools
+      - zlib1g-dev
+    override-pull: |
+      set -o nounset
+
+      if ! craftctl default; then
+          printf \
+            'Error: Unable to run the default action of this step.\n' \
+            1>&2
+            exit 2
+      fi
+
+      if ! "${CRAFT_PROJECT_DIR}/snap/local/scriptlets/selective-checkout" \
+          --append-packaging-revision; then
+          printf \
+              'Error: Unable to run the selective-checkout scriptlet.\n' \
+              1>&2
+              exit 2
+      fi
+    override-build: |
+      craftctl default
+
+      # Install executable
+      install -D -m 0755 oscar/OSCAR20 "${CRAFT_PART_INSTALL}/bin/OSCAR20"
+      ln -sf OSCAR20 "${CRAFT_PART_INSTALL}/bin/oscar"
+
+      # Install shared data files
+      mkdir -p "${CRAFT_PART_INSTALL}/share/OSCAR20"
+      if [ -d oscar/Help ]; then
+        cp -a oscar/Help "${CRAFT_PART_INSTALL}/share/OSCAR20/"
+      fi
+      if [ -d oscar/Html ]; then
+        cp -a oscar/Html "${CRAFT_PART_INSTALL}/share/OSCAR20/"
+      fi
+      if [ -d oscar/Translations ]; then
+        cp -a oscar/Translations "${CRAFT_PART_INSTALL}/share/OSCAR20/"
+      fi
+
+      # Symlink data directories next to the executable for appResourcePath()
+      ln -sf ../share/OSCAR20/Help "${CRAFT_PART_INSTALL}/bin/Help"
+      ln -sf ../share/OSCAR20/Html "${CRAFT_PART_INSTALL}/bin/Html"
+      ln -sf ../share/OSCAR20/Translations "${CRAFT_PART_INSTALL}/bin/Translations"
+
+      # Install desktop file and icons
+      install -D -m 0644 "${CRAFT_PROJECT_DIR}/snap/gui/oscar.desktop" "${CRAFT_PART_INSTALL}/usr/share/applications/oscar.desktop"
+      install -D -m 0644 "${CRAFT_PROJECT_DIR}/snap/gui/oscar.png" "${CRAFT_PART_INSTALL}/usr/share/icons/hicolor/512x512/apps/oscar.png"
+      install -D -m 0644 "${CRAFT_PART_SRC}/Building/Linux/OSCAR20.png" "${CRAFT_PART_INSTALL}/usr/share/icons/hicolor/48x48/apps/OSCAR20.png"
+      install -D -m 0644 "${CRAFT_PART_SRC}/Building/Linux/OSCAR20.svg" "${CRAFT_PART_INSTALL}/usr/share/icons/hicolor/scalable/apps/OSCAR20.svg"
