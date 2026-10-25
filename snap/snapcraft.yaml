@@ -36,18 +36,26 @@ apps:
     extensions:
       - kde-neon-6
     plugs:
-      - cups
+      # For storing user profiles, preferences, and data exports in the home directory
       - home
-      - raw-usb
-      - removable-media
-      - serial-port
 
-      # For detecting SD card filesystem mount
+      # For importing CPAP and oximetry data directly from SD cards and USB drives
+      - removable-media
+
+      # For detecting SD card filesystem mounts via QStorageInfo::mountedVolumes()
       - mount-observe
 
-      # For the Print Report functionality
-      - avahi-control
+      # For communicating with serial pulse oximeters via QSerialPort
+      - serial-port
+
+      # For accessing USB-to-serial UART adapters and udev data for oximeter devices
+      - raw-usb
+
+      # For the Print Report functionality via CUPS
       - cups
+
+      # For discovering network printers via mDNS/DNS-SD in the print dialog
+      - avahi-observe
 parts:
   oscar:
     plugin: qmake
