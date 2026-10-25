@@ -19,6 +19,12 @@ website: https://gitlab.com/brlin/oscar-snap
 issues: https://gitlab.com/brlin/oscar-snap/-/issues
 source-code: https://gitlab.com/brlin/oscar-snap
 
+# As of 2026/10/25 the kf6-core24 snap is only available in these architectures
+# https://snapcraft.io/kf6-core24
+platforms:
+  amd64:
+  arm64:
+
 layout:
   /usr/share/OSCAR20:
     symlink: $SNAP/share/OSCAR20
