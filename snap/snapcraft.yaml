@@ -44,6 +44,10 @@ apps:
 
       # For detecting SD card filesystem mount
       - mount-observe
+
+      # For the Print Report functionality
+      - avahi-control
+      - cups
 parts:
   oscar:
     plugin: qmake
