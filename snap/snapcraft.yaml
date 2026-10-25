@@ -36,6 +36,8 @@ apps:
       - removable-media
       - serial-port
 
+      # For detecting SD card filesystem mount
+      - mount-observe
 parts:
   oscar:
     plugin: qmake
