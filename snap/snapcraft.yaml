@@ -30,11 +30,11 @@ apps:
     extensions:
       - kde-neon-6
     plugs:
-      - home
-      - removable-media
-      - raw-usb
-      - serial-port
       - cups
+      - home
+      - raw-usb
+      - removable-media
+      - serial-port
 
 parts:
   oscar:
